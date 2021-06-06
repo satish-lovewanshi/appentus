@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\company;
 use Illuminate\Http\Request;
 use Validator;
+use File;
 
 class CompanyController extends Controller
 {
@@ -15,7 +16,7 @@ class CompanyController extends Controller
      */
     public function index()
     {   
-        $data = company::get();
+        $data = company::paginate(10);
         
         return view('company/companyList',["data"=>$data]);
     }
@@ -40,7 +41,7 @@ class CompanyController extends Controller
     {
         $validate = Validator::make($request->all(),[
             'name'=>['required','string', 'max:255'],
-            'email'=>['required','string', 'email', 'max:255', 'unique:company'],
+            'email'=>['required','string', 'email', 'max:255',],
             'logo'=>['required'],
             'website'=>['required','string', 'max:255'],
         ]);
@@ -53,7 +54,8 @@ class CompanyController extends Controller
             $newCompany = new company();
             $newCompany->name = $request->name;
             $newCompany->email = $request->email;
-            $newCompany->logo = $request->logo;
+            $newCompany->logo = $request->logo->getClientOriginalName();
+            $request->logo->storeAs('public/',$request->logo->getClientOriginalName());
             $newCompany->website = $request->website;
             $result = $newCompany->save();
             if($result){

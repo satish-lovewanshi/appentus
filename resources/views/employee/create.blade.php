@@ -1,4 +1,4 @@
-@extends('welcome') @section('mainData')
+@extends('home') @section('mainData')
 <h2>Add New Employee Form</h2>
 <form method="POST" action="{{ route('employee.store') }}">
     @csrf

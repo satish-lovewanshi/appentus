@@ -1,6 +1,6 @@
-@extends('welcome') @section('mainData')
+@extends('home') @section('mainData')
 <h2>Create New Company Form</h2>
-<form method="POST" action="{{ route('company.store') }}">
+<form method="POST" action="{{ route('company.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group row">
         <label for="name" class="col-md-4 col-form-label text-md-right">Company Name</label>

@@ -1,4 +1,4 @@
-@extends('welcome') @section('mainData')
+@extends('home') @section('mainData')
 <h2>Edit employee Details Form</h2>
 <form method="POST" action="{{ route('employee.update',['employee'=>$employee->id]) }}">
 {{ method_field('PUT') }}

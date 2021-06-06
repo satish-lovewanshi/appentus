@@ -14,7 +14,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $data = employee::get();
+        $data = employee::paginate(10);
         
         return view('employee/employeeList',["data"=>$data]);
     }
@@ -41,7 +41,7 @@ class EmployeeController extends Controller
             'firstName'=>['required','string', 'max:255'],
             'lastName'=>['required','string', 'max:255'],
             'company_id'=>['required'],
-            'email'=>['required','string', 'email', 'max:255', 'unique:employee'],
+            'email'=>['required','string', 'email', 'max:255', ],
             'phone'=>['required','min:10'],
         ]);
 
