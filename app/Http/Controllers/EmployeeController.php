@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\employee;
 use Illuminate\Http\Request;
-
+use Validator;
 class EmployeeController extends Controller
 {
     /**
@@ -14,7 +14,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $data = employee::get();
+        
+        return view('employee/employeeList',["data"=>$data]);
     }
 
     /**
@@ -24,7 +26,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('employee/create');
     }
 
     /**
@@ -35,7 +37,31 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = Validator::make($request->all(),[
+            'firstName'=>['required','string', 'max:255'],
+            'lastName'=>['required','string', 'max:255'],
+            'company_id'=>['required'],
+            'email'=>['required','string', 'email', 'max:255', 'unique:employee'],
+            'phone'=>['required','min:10'],
+        ]);
+
+        if($validate->fails()){
+            return back()->withError($validate)->withInput();
+        }else{
+           
+            
+            $new = new employee();
+            $new->firstName = $request->firstName;
+            $new->lastName = $request->lastName;
+            $new->company_id = $request->company_id;
+            $new->email = $request->email;
+            $new->phone = $request->phone;
+           
+            $result = $new->save();
+            if($result){
+                return redirect('employee')->with('message', 'New Employee Record Stored !');
+            }
+        }
     }
 
     /**
@@ -57,7 +83,7 @@ class EmployeeController extends Controller
      */
     public function edit(employee $employee)
     {
-        //
+        return view('employee/update',['employee'=>$employee]);
     }
 
     /**
@@ -69,7 +95,17 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, employee $employee)
     {
-        //
+        $new = employee::find($employee)->first();
+        $new->firstName = $request->firstName;
+        $new->lastName = $request->lastName;
+        $new->company_id = $request->company_id;
+        $new->email = $request->email;
+        $new->phone = $request->phone;
+        $result = $new->save();
+        if($result){
+            return redirect('employee')->with('message', 'Employee Record Updated !');
+        }
+
     }
 
     /**
@@ -80,6 +116,10 @@ class EmployeeController extends Controller
      */
     public function destroy(employee $employee)
     {
-        //
+        $employee = $employee::find($employee)->first();
+        $result = $employee->delete();
+        if($result){
+            return redirect()->back()->with('message', 'One employee Record Deleted !');
+        }
     }
 }

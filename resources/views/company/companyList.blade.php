@@ -4,7 +4,7 @@
 </div>
 @endif
 <div class="card-header row">
-    <h3>Compay </h3>
+    <h3>Company </h3>
     <a href="{{ route('company.create') }}" class="btn btn-success mx-auto">Add New Company</a>
 </div>
 <div class="mt-4">

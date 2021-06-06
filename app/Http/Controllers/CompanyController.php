@@ -39,10 +39,10 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(),[
-            'name'=>['required'],
-            'email'=>['required'],
+            'name'=>['required','string', 'max:255'],
+            'email'=>['required','string', 'email', 'max:255', 'unique:company'],
             'logo'=>['required'],
-            'website'=>['required'],
+            'website'=>['required','string', 'max:255'],
         ]);
 
         if($validate->fails()){
@@ -100,7 +100,7 @@ class CompanyController extends Controller
         $updateCompany->website = $request->website;
         $result = $updateCompany->save();
         if($result){
-            return redirect()->back()->with('message', 'Company Record Updated !');
+            return redirect('company')->with('message', 'Company Record Updated !');
         }
 
     }

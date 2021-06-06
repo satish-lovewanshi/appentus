@@ -8,7 +8,7 @@
                 <div class="card-header">
 
                     <a href="{{ route('company.index') }}" class="btn btn-success mr-2">Company</a>
-                    <a href="" class="btn btn-success mr-2">Employee</a>
+                    <a href="{{ route('employee.index') }}" class="btn btn-success mr-2">Employee</a>
                 </div>
 
                 <div class="card-body">
